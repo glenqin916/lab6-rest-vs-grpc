@@ -31,10 +31,31 @@ def doAdd(addr, debug=False):
         print(json.loads(response.text))
 
 def doDotProduct(addr, debug=False):
-    pass
+    headers = {'content-type': 'application/json'}
+    a = [random.random() for _ in range(100)]
+    b = [random.random() for _ in range(100)]
+    payload = {"a": a, "b": b}
+    
+    dot_url = addr + "/api/dotproduct"
+    response = requests.post(dot_url, json=payload, headers=headers)
+    
+    if debug:
+        print("Response is", response)
+        print(response.json())
 
 def doJsonImage(addr, debug=False):
-    pass
+    headers = {'content-type': 'application/json'}
+    with open('Flatirons_Winter_Sunrise_edit_2.jpg', 'rb') as f:
+        img_data = f.read()
+        img_base64 = base64.b64encode(img_data).decode('utf-8')
+    
+    payload = {"image": img_base64}
+    image_url = addr + '/api/jsonimage'
+    response = requests.post(image_url, json=payload, headers=headers)
+    
+    if debug:
+        print("Response is", response)
+        print(response.json())
 
 if len(sys.argv) < 3:
     print(f"Usage: {sys.argv[0]} <server ip> <cmd> <reps>")
